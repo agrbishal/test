@@ -1,0 +1,17 @@
+instance_type,region,operating_system,tenancy,purchase_option,term,payment_option,hourly_rate_usd,monthly_estimate_usd,on_demand_hourly_usd,savings_percent
+m5.2xlarge,us-east-1,Linux,shared,OnDemand,None,None,0.384,280.32,0.384,0
+m5.2xlarge,us-east-1,Linux,shared,Reserved,1yr,NoUpfront,0.242,176.66,0.384,37
+m5.2xlarge,us-east-1,Linux,shared,Reserved,1yr,PartialUpfront,0.230,168.03,0.384,40
+m5.2xlarge,us-east-1,Linux,shared,Reserved,1yr,AllUpfront,0.226,164.83,0.384,41
+m5.2xlarge,us-east-1,Linux,shared,Reserved,3yr,NoUpfront,0.166,121.18,0.384,57
+m5.2xlarge,us-east-1,Linux,shared,Reserved,3yr,PartialUpfront,0.153,112.27,0.384,60
+m5.2xlarge,us-east-1,Linux,shared,Reserved,3yr,AllUpfront,0.144,105.39,0.384,63
+m5.2xlarge,us-east-1,Linux,dedicated,OnDemand,None,None,0.384,280.32,0.384,0
+m5.2xlarge,us-east-1,Linux,dedicated,Reserved,1yr,NoUpfront,0.242,176.66,0.384,37
+m5.2xlarge,us-east-1,Linux,dedicated,Reserved,1yr,PartialUpfront,0.230,168.03,0.384,40
+m5.2xlarge,us-east-1,Linux,dedicated,Reserved,1yr,AllUpfront,0.226,164.83,0.384,41
+m5.2xlarge,us-east-1,Linux,dedicated,Reserved,3yr,NoUpfront,0.166,121.18,0.384,57
+m5.2xlarge,us-east-1,Linux,dedicated,Reserved,3yr,PartialUpfront,0.153,112.27,0.384,60
+m5.2xlarge,us-east-1,Linux,dedicated,Reserved,3yr,AllUpfront,0.144,105.39,0.384,63
+m5.2xlarge,us-east-1,Linux,shared,SavingsPlanCompute,1yr,NoUpfront,0.282,205.86,0.384,27
+m5.2xlarge,us-east-1,Linux,shared,SavingsPlanCompute,3yr,NoUpfront,0.195,142.35,0.384,49
