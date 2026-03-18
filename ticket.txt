@@ -1,0 +1,63 @@
+Subject
+
+Automation of Horizon and SummaCare Identification List Transfer to AWS S3 Outbound Folder
+
+Description
+
+Currently, the Horizon and SummaCare identification lists require manual intervention to move files into the outbound folder in AWS S3. Users must download the generated files and manually copy them to the outbound location.
+
+This ticket aims to automate the generation and transfer of these identification lists directly to the outbound folder in AWS S3. The automation will eliminate manual downloads and uploads, improve efficiency, and ensure consistent file delivery.
+
+For SummaCare, separate files must be generated for different groups before being placed in the outbound folder.
+
+Scope of Work
+
+Horizon
+
+Automate the process to transfer the identification list directly to the AWS S3 outbound folder.
+
+Remove the requirement for users to manually copy files to the outbound location.
+
+SummaCare
+
+Automate the generation and transfer of the identification list to the AWS S3 outbound folder.
+
+Remove the need for users to download and manually upload files.
+
+Generate separate files for:
+
+Summa MA
+
+Pioneer
+
+CHI
+
+Ensure the files are automatically placed in the designated outbound folder in AWS S3.
+
+Automation
+
+Integrate the automation into the existing data pipeline or scheduled job.
+
+Ensure the files are generated and transferred on the required schedule.
+
+Implement basic validation to confirm successful file placement in S3.
+
+Acceptance Criteria
+
+Horizon identification lists are automatically transferred to the AWS S3 outbound folder without manual intervention.
+
+SummaCare identification lists are automatically generated and transferred to the AWS S3 outbound folder.
+
+Separate output files are generated for Summa MA, Pioneer, and CHI.
+
+Users no longer need to download or manually copy files.
+
+Files appear in the correct outbound folder in AWS S3 after the scheduled run.
+
+The automation process completes successfully without manual intervention or errors.
+
+
+
+
+
+
