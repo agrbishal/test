@@ -1,0 +1,271 @@
+1. Create AWS Sub Accounts
+
+Story Points: 3
+
+Scope of Work
+
+Create new AWS sub-accounts using AWS Organizations
+
+Configure account isolation and baseline security policies
+
+Acceptance Criteria
+
+Sub-accounts successfully created
+
+Linked to AWS Organizations root
+
+Access verified via AWS Console
+
+2. Audit Sub Accounts
+
+Story Points: 3
+
+Scope of Work
+
+Audit production/dev AWS environments
+
+Document security, network, and HIPAA compliance gaps
+
+Acceptance Criteria
+
+Audit report created
+
+Identified risks documented
+
+Remediation recommendations listed
+
+3. Define Target VPC Architecture
+
+Story Points: 5
+
+Scope of Work
+
+Design public/private subnet structure
+
+Define security groups, routing, and NAT configuration
+
+Acceptance Criteria
+
+VPC architecture diagram approved
+
+Subnet CIDR ranges defined
+
+Security design documented
+
+Infrastructure as Code Development
+4. Draft Baseline Infrastructure Scripts
+
+Story Points: 8
+
+Scope of Work
+
+Create Terraform/CloudFormation scripts for:
+
+S3 buckets
+
+IAM roles
+
+SQS queues
+
+Security groups
+
+Acceptance Criteria
+
+IaC scripts stored in repository
+
+Scripts deploy resources successfully in dev
+
+Documentation provided
+
+5. Configure EC2 AMIs
+
+Story Points: 5
+
+Scope of Work
+
+Configure EC2 AMIs
+
+Install and configure Airflow and dependencies
+
+Acceptance Criteria
+
+AMI created successfully
+
+Airflow installed and running
+
+Instance launch verified
+
+6. Deploy SFTP Environment
+
+Story Points: 5
+
+Scope of Work
+
+Deploy SFTP server infrastructure
+
+Configure user management and access
+
+Acceptance Criteria
+
+SFTP endpoint accessible
+
+Users can authenticate and upload files
+
+Security groups validated
+
+Integration & Security Hardening
+7. Configure AWS PrivateLink Endpoint
+
+Story Points: 5
+
+Scope of Work
+
+Coordinate with Snowflake support
+
+Configure PrivateLink endpoint in new AWS account
+
+Acceptance Criteria
+
+PrivateLink connectivity established
+
+Snowflake connection validated
+
+8. Deploy KMS Encryption Keys
+
+Story Points: 3
+
+Scope of Work
+
+Create and configure AWS KMS keys
+
+Enable encryption for Lambda and storage resources
+
+Acceptance Criteria
+
+KMS keys created
+
+Encryption applied to required services
+
+9. Configure Duo MFA Integration
+
+Story Points: 3
+
+Scope of Work
+
+Integrate Duo MFA with IAM access
+
+Configure secure console authentication
+
+Acceptance Criteria
+
+MFA required for login
+
+Duo authentication validated
+
+Testing & Cutover
+10. Deploy IaC Templates
+
+Story Points: 3
+
+Scope of Work
+
+Deploy finalized infrastructure templates to new AWS account
+
+Acceptance Criteria
+
+Deployment completed without errors
+
+Resources visible in AWS console
+
+11. Execute Test Data Ingestion Flow
+
+Story Points: 5
+
+Scope of Work
+
+Upload mock claims file via SFTP
+
+Trigger Lambda and Airflow DAG pipeline
+
+Validate Snowflake ingestion
+
+Acceptance Criteria
+
+File successfully processed
+
+DAG execution confirmed
+
+Data visible in Snowflake tables
+
+12. Validate System Logs
+
+Story Points: 3
+
+Scope of Work
+
+Verify logs in Slack integrations and monitoring tools
+
+Validate pipeline observability
+
+Acceptance Criteria
+
+Logs generated for ingestion process
+
+Monitoring alerts functional
+
+Operational Tasks
+13. Linux Access for PIM Development
+
+Story Points: 2
+
+Scope of Work
+
+Request and configure Linux desktop/GUI access
+
+Acceptance Criteria
+
+Access granted
+
+User login verified
+
+14. AWS Cost Optimization Analysis
+
+Story Points: 3
+
+Scope of Work
+
+Analyze EC2 On-Demand vs Reserved instances (1-3 yr)
+
+Acceptance Criteria
+
+Cost comparison report delivered
+
+Savings opportunities identified
+
+15. AWS ETL Logging Integration
+
+Story Points: 3
+
+Scope of Work
+
+Integrate AWS ETL logs with monitoring system
+
+Acceptance Criteria
+
+Logs visible in monitoring tool
+
+Alerts configured
+
+16. Mobile Authentication Access (PIM)
+
+Story Points: 2
+
+Scope of Work
+
+Enable admin access to mobile authentication with Microsoft/Google
+
+Acceptance Criteria
+
+Admin authentication enabled
+
+Mobile login verified
