@@ -1,0 +1,186 @@
+# Create a project folder
+mkdir ~/kt-processor && cd ~/kt-processor
+
+# Create a Python venv (fully self-contained, easy to rm -rf later)
+python3 -m venv .venv
+source .venv/bin/activate
+
+--------------------
+# Core packages
+pip install openai-whisper ffmpeg-python
+
+# System dependency: ffmpeg
+sudo apt install ffmpeg -y        # Ubuntu/Debian
+# or: sudo yum install ffmpeg -y  # Amazon Linux / CentOS
+
+-------------------------
+
+curl -fsSL https://ollama.com/install.sh | sh
+
+# Pull a model — llama3.1:8b is fast on your 32GB machine
+ollama pull llama3.1:8b
+
+# Start Ollama server (keep this running in a tmux/screen session)
+ollama serve &
+
+------------------------------------
+# Install updated dependencies
+pip install whisperx pyannote.audio torch torchaudio ffmpeg-python requests
+
+
+------------------------------------
+import whisperx
+import subprocess
+import os
+import sys
+import requests
+from pathlib import Path
+
+# ── Config ─────────────────────────────────────────────────────────────────
+WHISPER_MODEL  = "large-v3"          # large-v3 with faster-whisper backend
+DEVICE         = "cpu"               # M5.2xlarge has no GPU; use "cuda" if GPU added
+COMPUTE_TYPE   = "int8"              # efficient on CPU
+HF_TOKEN       = "YOUR_HF_TOKEN"    # get free token at huggingface.co/settings/tokens
+NUM_SPEAKERS   = None                # set to e.g. 3 if you know exact count; else auto-detect
+OLLAMA_MODEL   = "llama3.1:8b"
+OLLAMA_URL     = "http://localhost:11434/api/generate"
+OUTPUT_DIR     = Path("./output")
+OUTPUT_DIR.mkdir(exist_ok=True)
+# ───────────────────────────────────────────────────────────────────────────
+
+def extract_audio(video_path: Path) -> Path:
+    audio_path = OUTPUT_DIR / (video_path.stem + ".wav")
+    print(f"  [1/4] Extracting audio...")
+    subprocess.run([
+        "ffmpeg", "-y", "-i", str(video_path),
+        "-ar", "16000", "-ac", "1", "-f", "wav", str(audio_path)
+    ], check=True, capture_output=True)
+    return audio_path
+
+def transcribe_with_speakers(audio_path: Path) -> tuple[str, list]:
+    print(f"  [2/4] Transcribing with WhisperX ({WHISPER_MODEL})...")
+    model = whisperx.load_model(WHISPER_MODEL, DEVICE, compute_type=COMPUTE_TYPE)
+    audio = whisperx.load_audio(str(audio_path))
+    result = model.transcribe(audio, batch_size=8)
+
+    print(f"  [3/4] Aligning word timestamps...")
+    align_model, metadata = whisperx.load_align_model(
+        language_code=result["language"], device=DEVICE
+    )
+    result = whisperx.align(result["segments"], align_model, metadata, audio, DEVICE)
+
+    print(f"  [4/4] Identifying speakers (pyannote diarization)...")
+    diarize_model = whisperx.DiarizationPipeline(use_auth_token=HF_TOKEN, device=DEVICE)
+    diarize_segments = diarize_model(
+        audio_path,
+        min_speakers=2,
+        max_speakers=NUM_SPEAKERS or 5
+    )
+    result = whisperx.assign_word_speakers(diarize_segments, result)
+
+    # Build clean labeled transcript
+    transcript_lines = []
+    plain_lines = []
+    current_speaker = None
+    buffer = []
+
+    for seg in result["segments"]:
+        speaker = seg.get("speaker", "UNKNOWN")
+        text = seg["text"].strip()
+        start = seg["start"]
+        end = seg["end"]
+
+        if speaker != current_speaker:
+            if buffer:
+                plain_lines.append(f"\n{current_speaker}:\n" + " ".join(buffer))
+                transcript_lines.append(
+                    f"\n[{current_speaker}] [{buffer_start:.1f}s - {buffer_end:.1f}s]\n" +
+                    " ".join(buffer)
+                )
+            current_speaker = speaker
+            buffer = [text]
+            buffer_start = start
+        else:
+            buffer.append(text)
+        buffer_end = end
+
+    if buffer:
+        plain_lines.append(f"\n{current_speaker}:\n" + " ".join(buffer))
+        transcript_lines.append(
+            f"\n[{current_speaker}] [{buffer_start:.1f}s - {buffer_end:.1f}s]\n" +
+            " ".join(buffer)
+        )
+
+    return "\n".join(transcript_lines), "\n".join(plain_lines)
+
+def summarize(transcript: str) -> str:
+    print(f"  Summarizing with Ollama ({OLLAMA_MODEL})...")
+    prompt = f"""You are analyzing a knowledge transfer (KT) session with multiple speakers.
+
+Transcript (with speaker labels):
+\"\"\"
+{transcript[:14000]}
+\"\"\"
+
+Please provide:
+1. **Speakers** — briefly describe each speaker's role/contribution based on content
+2. **Main Agenda / Topics Discussed** — bullet list of all key topics covered
+3. **Summary** — a concise 3-5 paragraph summary of the session
+4. **Key Takeaways** — 5-8 bullet points of the most important things discussed
+5. **Action Items** (if any) — anything mentioned as next steps or TODO
+
+Note which speaker raised or owned each key topic where possible.
+"""
+    resp = requests.post(OLLAMA_URL, json={
+        "model": OLLAMA_MODEL,
+        "prompt": prompt,
+        "stream": False
+    }, timeout=300)
+    return resp.json()["response"]
+
+def process_video(video_path: str):
+    vp = Path(video_path)
+    print(f"\n{'='*60}\nProcessing: {vp.name}\n{'='*60}")
+
+    audio_path = extract_audio(vp)
+    timestamped_transcript, plain_transcript = transcribe_with_speakers(audio_path)
+
+    # Save full timestamped transcript
+    ts_file = OUTPUT_DIR / (vp.stem + "_transcript_timestamped.txt")
+    ts_file.write_text(timestamped_transcript)
+    print(f"  ✓ Timestamped transcript → {ts_file.name}")
+
+    # Save plain transcript (easier to read)
+    plain_file = OUTPUT_DIR / (vp.stem + "_transcript.txt")
+    plain_file.write_text(plain_transcript)
+    print(f"  ✓ Plain transcript → {plain_file.name}")
+
+    summary = summarize(plain_transcript)
+    summary_file = OUTPUT_DIR / (vp.stem + "_summary.md")
+    summary_file.write_text(f"# KT Session: {vp.stem}\n\n{summary}")
+    print(f"  ✓ Summary → {summary_file.name}")
+
+    audio_path.unlink()
+    print(f"\n  Done! Outputs in ./output/")
+
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print("Usage: python process_videos.py video1.mp4 video2.mp4 ...")
+        sys.exit(1)
+    for video in sys.argv[1:]:
+        process_video(video)
+
+----------------------------------------------
+python process_videos.py /path/to/your_video.mp4
+
+---------------------- CLEAN UP-----------------
+
+# Remove the venv and all output
+rm -rf ~/kt-processor/.venv
+
+# Remove Ollama and its models
+sudo systemctl stop ollama
+sudo rm -rf /usr/local/bin/ollama ~/.ollama
+
+# Remove ffmpeg (if you don't need it)
+sudo apt remove ffmpeg -y
