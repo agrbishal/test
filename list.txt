@@ -1,0 +1,16 @@
+*.amazonaws.com
+*.aws.amazon.com
+*.snowflakecomputing.com
+*.azure.com
+*.microsoftonline.com
+*.windows.net
+suse.com
+updates.suse.com
+download.opensuse.org
+scc.suse.com
+pypi.org
+files.pythonhosted.org
+github.com
+api.github.com
+login.microsoftonline.com
+sts.amazonaws.com
