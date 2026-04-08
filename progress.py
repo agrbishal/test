@@ -62,3 +62,109 @@ I would like to discuss:
 My growth path and skill development, particularly in cloud architecture and data engineering
 Opportunities to own larger features or projects end-to-end
 Alignment on long-term expectations and success criteria for my role
+
+
+
+
+✅ Goal 1
+
+Name:
+End-to-End Data Workflow & Lineage Documentation
+
+Type:
+Personal Goal
+
+Performance Goal:
+Yes
+
+Alignment:
+
+Team goals
+Organizational goals
+
+(Optional description if field exists):
+Map and document complete data flow across Airflow DAGs, Snowflake, and AWS services to improve system visibility, onboarding, and troubleshooting.
+
+✅ Goal 2
+
+Name:
+Improve Pipeline Reliability & Observability
+
+Type:
+Personal Goal
+
+Performance Goal:
+Yes
+
+Alignment:
+
+Team goals
+Manager’s goals
+
+Description:
+Enhance monitoring, alerting, and failure handling using SNS, SQS, and logging to reduce pipeline failures and manual intervention.
+
+✅ Goal 3
+
+Name:
+Advance Infrastructure as Code (Terraform) for Dev Environment
+
+Type:
+Personal Goal
+
+Performance Goal:
+Yes
+
+Alignment:
+
+Team goals
+Organizational goals
+
+Description:
+Contribute to building and improving Terraform-based infrastructure for a reproducible, environment-agnostic setup.
+
+✅ Goal 4
+
+Name:
+Own and Enhance Client Review Outbound Pipeline
+
+Type:
+Personal Goal
+
+Performance Goal:
+Yes
+
+Alignment:
+
+Your goals
+Team goals
+
+Description:
+Take ownership of development, integration, and optimization of the client review outbound Lambda and its associated pipeline.
+
+✅ Goal 5 (Development-focused)
+
+Name:
+Strengthen AWS Architecture & Data Engineering Skills
+
+Type:
+Development Goal
+
+Performance Goal:
+Yes (important — include this)
+
+Alignment:
+
+Your goals
+Organizational goals
+
+Description:
+Build deeper expertise in AWS services, Airflow, and Snowflake to contribute to design decisions and system improvements.
+
+💡 Key Tips (important)
+Mark “Performance Goal = Yes” for all → ensures they count in reviews
+Keep a mix of:
+Execution (pipeline, lambda)
+System impact (reliability, IaC)
+Growth (skills)
+Don’t add too many — 4–5 strong goals is ideal
