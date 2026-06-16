@@ -1,2 +1,0 @@
-# QUOTE ENTIRE PROJECT
-I don't think we're at the point where a responsible engineer can quote the entire project yet. The biggest unknown is whether we're dealing with a reversible deterministic process or a cryptographic one. I'd rather spend 2–3 weeks answering that question and then give you a much more accurate estimate than pretend certainty today.
