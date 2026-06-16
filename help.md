@@ -8,6 +8,21 @@ Once we know whether it's algorithmic or cryptographic, we can make a much stron
 
 # What's your biggest concern?
 A hidden cryptographic dependency or manufacturer secret. If Page 12 is tied to a secret key, pattern analysis alone may not be enough.
+A cryptographic dependency is a risk because it may mean the answer isn't present in the data we're currently analyzing. 
+However, even if that proves true, the investigation doesn't end. I
+t simply shifts from data analysis toward identifying the system component responsible for generating or validating Page 12
+
+# What if the concern holds true?
+
+If statistical and dependency analysis fail to reveal a reproducible transformation, 
+the next phase should focus on identifying where the transformation is performed rather than continuing pattern analysis.
+
+## Specifically:
+
+- Determine whether the RFID chip contains additional protected data.
+- Determine whether the scanner or laser software participates in generating Page 12.
+- Capture and analyze communications between devices and software.
+- Evaluate firmware, binaries, or external systems involved in device validation.
 
 # What's your first step?
 I'd try to eliminate the simplest explanations first. Is Af derived only from Ai? Is it derived from other pages? 
